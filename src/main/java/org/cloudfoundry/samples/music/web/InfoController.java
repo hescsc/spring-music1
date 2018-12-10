@@ -8,6 +8,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,11 @@ public class InfoController {
 
     private Environment springEnvironment;
 
+
+    @Autowired
+    private DataSource dataSource;
+
+
     @Autowired
     public InfoController(Environment springEnvironment) {
         this.springEnvironment = springEnvironment;
@@ -25,7 +32,17 @@ public class InfoController {
 
     @RequestMapping(value = "/appinfo")
     public ApplicationInfo info() {
-        return new ApplicationInfo(springEnvironment.getActiveProfiles(), getServiceNames());
+        String dbConnection = "";
+        if (dataSource != null) {
+            try {
+                dbConnection = dataSource.getConnection().toString();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        ApplicationInfo applicationInfo = new ApplicationInfo(springEnvironment.getActiveProfiles(), getServiceNames());
+        applicationInfo.setDbInfo(dbConnection);
+        return applicationInfo;
     }
 
     @RequestMapping(value = "/service")
