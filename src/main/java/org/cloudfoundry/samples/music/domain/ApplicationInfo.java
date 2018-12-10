@@ -4,6 +4,7 @@ public class ApplicationInfo {
     private String[] profiles;
     private String[] services;
     private String dbInfo;
+    private String cloudInfo;
 
     public ApplicationInfo(String[] profiles, String[] services) {
         this.profiles = profiles;
@@ -32,5 +33,13 @@ public class ApplicationInfo {
 
     public void setDbInfo(String dbInfo) {
         this.dbInfo = dbInfo;
+    }
+
+    public String getCloudInfo() {
+        return cloudInfo;
+    }
+
+    public void setCloudInfo(String cloudInfo) {
+        this.cloudInfo = cloudInfo;
     }
 }

@@ -42,6 +42,10 @@ dependencies {
     // Spring Cloud Connectors
     compile "org.springframework.cloud:spring-cloud-spring-service-connector:${springCloudConnectorsVersion}"
     compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector:${springCloudConnectorsVersion}"
+    // To use Spring Cloud Connectors for development
+    compile "org.springframework.cloud:spring-cloud-localconfig-connector:${springCloudConnectorsVersion}"
+
+
 
     // JPA Persistence
     runtime "com.h2database:h2"

@@ -3,6 +3,7 @@ package org.cloudfoundry.samples.music.web;
 import org.cloudfoundry.samples.music.domain.ApplicationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.Cloud;
+import org.springframework.cloud.CloudFactory;
 import org.springframework.cloud.service.ServiceInfo;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +16,8 @@ import java.util.List;
 
 @RestController
 public class InfoController {
-    @Autowired(required = false)
-    private Cloud cloud;
 
     private Environment springEnvironment;
-
 
     @Autowired
     private DataSource dataSource;
@@ -32,6 +30,15 @@ public class InfoController {
 
     @RequestMapping(value = "/appinfo")
     public ApplicationInfo info() {
+        String cloudInfo;
+        final Cloud cloud = getCloud();
+        if (cloud != null) {
+            cloudInfo = cloud.getApplicationInstanceInfo().toString();
+        } else {
+            cloudInfo = "cloud obj. was null";
+        }
+
+
         String dbConnection = "";
         if (dataSource != null) {
             try {
@@ -42,11 +49,18 @@ public class InfoController {
         }
         ApplicationInfo applicationInfo = new ApplicationInfo(springEnvironment.getActiveProfiles(), getServiceNames());
         applicationInfo.setDbInfo(dbConnection);
+        applicationInfo.setCloudInfo(cloudInfo);
         return applicationInfo;
+    }
+
+    private Cloud getCloud() {
+        CloudFactory cloudFactory = new CloudFactory();
+        return cloudFactory.getCloud();
     }
 
     @RequestMapping(value = "/service")
     public List<ServiceInfo> showServiceInfo() {
+        final Cloud cloud = getCloud();
         if (cloud != null) {
             return cloud.getServiceInfos();
         } else {
@@ -55,6 +69,7 @@ public class InfoController {
     }
 
     private String[] getServiceNames() {
+        final Cloud cloud = getCloud();
         if (cloud != null) {
             final List<ServiceInfo> serviceInfos = cloud.getServiceInfos();
 
