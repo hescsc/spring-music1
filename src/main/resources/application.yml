@@ -13,3 +13,12 @@ management:
       exposure:
         include: "*"
 
+
+---
+spring:
+  profiles: cloud
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
