@@ -2,7 +2,6 @@
 applications:
 - name: spring-music1
   memory: 1G
-  random-route: true
   domain: scapp.swisscom.com
   path: build/libs/spring-music1-1.0.jar
 
