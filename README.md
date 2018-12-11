@@ -14,11 +14,15 @@ To build a runnable Spring Boot jar file, run the following command:
 $ ./gradlew clean assemble
 ~~~
 
-## Service
+## Persistence 
 spring-music1 runs 
- - locally --> in memory H2 DB
- - CF without bound service --> in memory H2 DB
- - CF with bound Relational DB service --> Relational DB
+
+|env|bound service|persistence|
+|---|-------------|-----------|
+|local|-|in memory H2 DB|
+|CF|-|in memory H2 DB|
+|CF|bound Relational DB service|Relational DB|
+
  
  
  
